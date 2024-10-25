@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Ejercicio2CM</string>
+
+    <string name="error_date_not_available">Date not available</string>
 </resources>
