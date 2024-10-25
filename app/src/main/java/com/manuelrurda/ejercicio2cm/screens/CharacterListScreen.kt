@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.manuelrurda.ejercicio2cm.R
 import com.manuelrurda.ejercicio2cm.components.Background
-import com.manuelrurda.ejercicio2cm.transformDateFormat
+import com.manuelrurda.ejercicio2cm.utils.transformDateFormat
 
 @Composable
 fun CharacterListScreen(){
