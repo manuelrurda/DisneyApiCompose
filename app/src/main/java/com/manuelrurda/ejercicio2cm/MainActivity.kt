@@ -9,6 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.manuelrurda.ejercicio2cm.screens.CharacterDetailsScreen
 import com.manuelrurda.ejercicio2cm.screens.CharacterListScreen
 import com.manuelrurda.ejercicio2cm.ui.theme.Ejercicio2CMTheme
 import com.manuelrurda.ejercicio2cm.viewmodels.CharactersViewModel
@@ -30,7 +32,13 @@ class MainActivity : ComponentActivity() {
                     startDestination = CharacterList
                 ){
                     composable<CharacterList> {
-                        CharacterListScreen(viewModel)
+                        CharacterListScreen(viewModel) { id ->
+                            navController.navigate(CharacterDetails(id))
+                        }
+                    }
+                    composable<CharacterDetails> {
+                        val args = it.toRoute<CharacterDetails>()
+                        CharacterDetailsScreen(id = args.id)
                     }
                 }
             }
@@ -40,3 +48,6 @@ class MainActivity : ComponentActivity() {
 
 @Serializable
 object CharacterList
+
+@Serializable
+data class CharacterDetails(val id:Int)

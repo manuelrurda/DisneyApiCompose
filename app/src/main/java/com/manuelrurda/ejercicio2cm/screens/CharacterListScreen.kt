@@ -3,6 +3,7 @@ package com.manuelrurda.ejercicio2cm.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -34,72 +35,36 @@ import com.manuelrurda.ejercicio2cm.utils.transformDateFormat
 import com.manuelrurda.ejercicio2cm.viewmodels.CharactersViewModel
 
 @Composable
-fun CharacterListScreen(viewModel: CharactersViewModel){
+fun CharacterListScreen(
+    viewModel: CharactersViewModel,
+    onCharacterClick: (Int) -> Unit
+){
     val characters by viewModel.characters.collectAsState()
 
-    val charList = listOf(
-        CharacterModel(
-        "Sir Bart",
-        "https://static.wikia.nocookie.net/disney/images/6/6d/Sword-in-stone-disneyscreencaps.com-8698.jpg",
-        "2021-04-12T01:35:31.366Z"),
-        CharacterModel(
-            "Sir Bart",
-            "https://static.wikia.nocookie.net/disney/images/6/6d/Sword-in-stone-disneyscreencaps.com-8698.jpg",
-            "2021-04-12T01:35:31.366Z"),
-        CharacterModel(
-            "Sir Bart",
-            "https://static.wikia.nocookie.net/disney/images/6/6d/Sword-in-stone-disneyscreencaps.com-8698.jpg",
-            "2021-04-12T01:35:31.366Z"),
-        CharacterModel(
-            "Sir Bart",
-            "https://static.wikia.nocookie.net/disney/images/6/6d/Sword-in-stone-disneyscreencaps.com-8698.jpg",
-            "2021-04-12T01:35:31.366Z"),
-        CharacterModel(
-            "Sir Bart",
-            "https://static.wikia.nocookie.net/disney/images/6/6d/Sword-in-stone-disneyscreencaps.com-8698.jpg",
-            "2021-04-12T01:35:31.366Z"),
-        CharacterModel(
-            "Sir Bart",
-            "https://static.wikia.nocookie.net/disney/images/6/6d/Sword-in-stone-disneyscreencaps.com-8698.jpg",
-            "2021-04-12T01:35:31.366Z"),
-        CharacterModel(
-            "Sir Bart",
-            "https://static.wikia.nocookie.net/disney/images/6/6d/Sword-in-stone-disneyscreencaps.com-8698.jpg",
-            "2021-04-12T01:35:31.366Z"),
-        CharacterModel(
-            "Sir Bart",
-            "https://static.wikia.nocookie.net/disney/images/6/6d/Sword-in-stone-disneyscreencaps.com-8698.jpg",
-            "2021-04-12T01:35:31.366Z"),
-        CharacterModel(
-            "Sir Bart",
-            "https://static.wikia.nocookie.net/disney/images/6/6d/Sword-in-stone-disneyscreencaps.com-8698.jpg",
-            "2021-04-12T01:35:31.366Z"),
-        CharacterModel(
-            "Sir Bart",
-            "https://static.wikia.nocookie.net/disney/images/6/6d/Sword-in-stone-disneyscreencaps.com-8698.jpg",
-            "2021-04-12T01:35:31.366Z"),
-        )
-
     Background {
-        CharacterListColumn(data = characters)
+        CharacterListColumn(data = characters, onCharacterClick)
     }
 }
 
 @Composable
-fun CharacterListColumn(data: List<CharacterModel>){
+fun CharacterListColumn(data: List<CharacterModel>, onCharacterClick: (Int) -> Unit){
     LazyColumn(modifier = Modifier.padding(start = 5.dp, end = 5.dp, top = 20.dp)) {
         items(data){
-            CharacterListItem(it)
+            CharacterListItem(it, onCharacterClick)
         }
     }
 }
 
 @Composable
-fun CharacterListItem(characterModel: CharacterModel) {
+fun CharacterListItem(characterModel: CharacterModel, onCharacterClick: (Int) -> Unit) {
     val hasImage = !characterModel.imageUrl.isNullOrEmpty()
     val avatar = rememberImagePainter(data = characterModel.imageUrl)
     ElevatedCard(
-        modifier = Modifier.padding(all = 8.dp),
+        modifier = Modifier
+            .padding(all = 8.dp)
+            .clickable {
+                onCharacterClick(characterModel.id)
+            },
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)){
         Row(modifier = Modifier
             .fillMaxWidth()
@@ -113,9 +78,11 @@ fun CharacterListItem(characterModel: CharacterModel) {
                 modifier = Modifier
                     .size(64.dp)
                     .clip(CircleShape)
-                    .border(width = 2.dp,
-                            shape = CircleShape,
-                            color = Color.Black)
+                    .border(
+                        width = 2.dp,
+                        shape = CircleShape,
+                        color = Color.Black
+                    )
             )
             Spacer(modifier = Modifier.width(20.dp))
             Column {
@@ -126,14 +93,15 @@ fun CharacterListItem(characterModel: CharacterModel) {
     }
 }
 
-data class CharacterObject(
-    val name:String,
-    val imageURL:String,
-    val dateCreated:String
-)
-
 @Preview(showBackground = true)
 @Composable
 fun CharacterListScreenPreview(){
-    CharacterListScreen(CharactersViewModel())
+//    CharacterListScreen(CharactersViewModel(),)
+//    CharacterListItem(
+//        characterModel = CharacterModel(
+//            100,
+//            "Sir Bart",
+//            "https://static.wikia.nocookie.net/disney/images/6/6d/Sword-in-stone-disneyscreencaps.com-8698.jpg",
+//            "2021-04-12T01:35:31.366Z"), navController = null
+//    )
 }

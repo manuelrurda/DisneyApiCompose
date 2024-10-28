@@ -17,6 +17,9 @@ class CharactersViewModel: ViewModel() {
     private val _characters = MutableStateFlow<List<CharacterModel>>(emptyList())
     val characters = _characters.asStateFlow()
 
+    private val _character = MutableStateFlow<CharacterModel?>(null)
+    val character = _character.asStateFlow()
+
     init {
         getCharacters()
     }
@@ -26,6 +29,15 @@ class CharactersViewModel: ViewModel() {
             val response = RetrofitClient.retrofit.getCharacters()
             withContext(Dispatchers.Main){
                 _characters.value = response.body()?.data ?: emptyList()
+            }
+        }
+    }
+
+    private fun getCharacterById(id:Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = RetrofitClient.retrofit.getCharacterById(id)
+            withContext(Dispatchers.Main){
+                _character.value = response.body()
             }
         }
     }
