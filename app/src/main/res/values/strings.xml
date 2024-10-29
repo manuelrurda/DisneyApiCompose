@@ -2,4 +2,13 @@
     <string name="app_name">Ejercicio2CM</string>
 
     <string name="error_date_not_available">Date not available</string>
+
+    <string name="description_avatar">Avatar</string>
+
+    <string name="heading_films">Películas</string>
+    <string name="heading_shorts">Cortos</string>
+    <string name="heading_shows">Shows</string>
+
+    <string name="text_nothing_to_show">Nada que mostrar</string>
+
 </resources>

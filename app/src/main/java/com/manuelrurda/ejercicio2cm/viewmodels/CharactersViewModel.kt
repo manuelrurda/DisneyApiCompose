@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manuelrurda.ejercicio2cm.models.CharacterModel
+import com.manuelrurda.ejercicio2cm.models.getEmptyCharacterModel
 import com.manuelrurda.ejercicio2cm.network.RetrofitClient
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +18,7 @@ class CharactersViewModel: ViewModel() {
     private val _characters = MutableStateFlow<List<CharacterModel>>(emptyList())
     val characters = _characters.asStateFlow()
 
-    private val _character = MutableStateFlow<CharacterModel?>(null)
+    private val _character = MutableStateFlow<CharacterModel>(getEmptyCharacterModel())
     val character = _character.asStateFlow()
 
     init {
@@ -33,13 +34,17 @@ class CharactersViewModel: ViewModel() {
         }
     }
 
-    private fun getCharacterById(id:Int){
+    fun getCharacterById(id:Int){
         viewModelScope.launch(Dispatchers.IO) {
             val response = RetrofitClient.retrofit.getCharacterById(id)
             withContext(Dispatchers.Main){
-                _character.value = response.body()
+                _character.value = response.body()?.data ?: getEmptyCharacterModel()
             }
         }
+    }
+
+    fun clearCharacter() {
+        _character.value = getEmptyCharacterModel()
     }
 
 }

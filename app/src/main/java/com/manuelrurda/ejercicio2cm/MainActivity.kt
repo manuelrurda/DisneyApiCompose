@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable<CharacterDetails> {
                         val args = it.toRoute<CharacterDetails>()
-                        CharacterDetailsScreen(id = args.id)
+                        CharacterDetailsScreen(id = args.id, viewModel = viewModel)
                     }
                 }
             }
