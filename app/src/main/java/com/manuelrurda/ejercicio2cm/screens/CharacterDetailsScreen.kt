@@ -4,10 +4,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
@@ -26,6 +29,11 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.manuelrurda.ejercicio2cm.R
 import com.manuelrurda.ejercicio2cm.components.Background
+import com.manuelrurda.ejercicio2cm.ui.theme.CharacterHeadingTextStyle
+import com.manuelrurda.ejercicio2cm.ui.theme.HeadingTextStyle
+import com.manuelrurda.ejercicio2cm.ui.theme.HintGray
+import com.manuelrurda.ejercicio2cm.ui.theme.SubHeadingTextStyle
+import com.manuelrurda.ejercicio2cm.ui.theme.TransparentBG
 import com.manuelrurda.ejercicio2cm.utils.transformDateFormat
 import com.manuelrurda.ejercicio2cm.viewmodels.CharactersViewModel
 
@@ -39,6 +47,7 @@ fun CharacterDetailsScreen(id:Int, viewModel: CharactersViewModel){
         viewModel.getCharacterById(id)
     }
 
+    println(character.toString())
     val hasImage = !character.imageUrl.isNullOrEmpty()
     val avatar = rememberImagePainter(data = character.imageUrl)
 
@@ -47,12 +56,16 @@ fun CharacterDetailsScreen(id:Int, viewModel: CharactersViewModel){
             modifier = Modifier
                 .fillMaxSize()
                 .padding(20.dp),
+            colors = CardDefaults.cardColors(containerColor = TransparentBG),
             elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)) {
             Column(modifier = Modifier.padding(15.dp)) {
-//                Text(text = character.name)
-                Text(text = "Character")
-//                Text(text = transformDateFormat(character.createdAt))
-                Text(text = "21 de Diciembre de 2024")
+                Text(text = character.name,
+                    style = CharacterHeadingTextStyle,
+                    color = Color.White)
+                Text(text = transformDateFormat(character.createdAt),
+                    style = SubHeadingTextStyle,
+                    color = HintGray)
+                Spacer(modifier = Modifier.height(20.dp))
                 Image(
                     painter = if (hasImage) avatar
                     else painterResource(R.drawable.img_placeholder_character),
@@ -64,26 +77,60 @@ fun CharacterDetailsScreen(id:Int, viewModel: CharactersViewModel){
                         .background(color = Color.White)
 
                 )
-                if(character.films.isNotEmpty()){
-                    Text(text = stringResource(id = R.string.heading_films))
-                    for (film:String in character.films){
-                        Text(text = film)
+                Spacer(modifier = Modifier.height(20.dp))
+                LazyColumn(modifier = Modifier.weight(weight = 1f, fill = false)) {
+                    if(character.films.isNotEmpty()){
+                        item {
+                            Text(text = stringResource(id = R.string.heading_films),
+                                style = HeadingTextStyle,
+                                color = Color.White)
+                        }
+                        items(character.films){
+                            Text(text = "\u2022 $it",
+                                style = SubHeadingTextStyle,
+                                color = HintGray,
+                                modifier = Modifier.padding(vertical = 5.dp, horizontal = 3.dp))
+                        }
+                        item{
+                            Spacer(modifier = Modifier.height(15.dp))
+                        }
+                    }
+
+                    if(character.shortFilms.isNotEmpty()){
+                        item {
+                            Text(text = stringResource(id = R.string.heading_shorts),
+                                style = HeadingTextStyle,
+                                color = Color.White)
+                        }
+                        items(character.shortFilms){
+                            Text(text = "\u2022 $it",
+                                style = SubHeadingTextStyle,
+                                color = HintGray,
+                                modifier = Modifier.padding(vertical = 5.dp, horizontal = 3.dp))
+                        }
+                        item{
+                            Spacer(modifier = Modifier.height(15.dp))
+                        }
+                    }
+
+                    if(character.tvShows.isNotEmpty()){
+                        item {
+                            Text(text = stringResource(id = R.string.heading_shows),
+                                style = HeadingTextStyle,
+                                color = Color.White)
+                        }
+                        items(character.tvShows){
+                            Text(text = "\u2022 $it",
+                                style = SubHeadingTextStyle,
+                                color = HintGray,
+                                modifier = Modifier.padding(vertical = 5.dp, horizontal = 3.dp))
+                        }
+                        item{
+                            Spacer(modifier = Modifier.height(15.dp))
+                        }
                     }
                 }
 
-                if(character.shortFilms.isNotEmpty()){
-                    Text(text = stringResource(id = R.string.heading_shorts))
-                    for (short:String in character.shortFilms){
-                        Text(text = short)
-                    }
-                }
-
-                if(character.tvShows.isNotEmpty()){
-                    Text(text = stringResource(id = R.string.heading_shows))
-                    for (show:String in character.tvShows){
-                        Text(text = show)
-                    }
-                }
             }
         }
     }

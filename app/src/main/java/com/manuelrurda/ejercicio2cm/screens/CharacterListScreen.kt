@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -20,17 +21,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.manuelrurda.ejercicio2cm.R
 import com.manuelrurda.ejercicio2cm.components.Background
 import com.manuelrurda.ejercicio2cm.models.CharacterModel
+import com.manuelrurda.ejercicio2cm.ui.theme.HeadingTextStyle
+import com.manuelrurda.ejercicio2cm.ui.theme.HintGray
+import com.manuelrurda.ejercicio2cm.ui.theme.SubHeadingTextStyle
+import com.manuelrurda.ejercicio2cm.ui.theme.TransparentBG
 import com.manuelrurda.ejercicio2cm.utils.transformDateFormat
 import com.manuelrurda.ejercicio2cm.viewmodels.CharactersViewModel
 
@@ -48,7 +55,18 @@ fun CharacterListScreen(
 
 @Composable
 fun CharacterListColumn(data: List<CharacterModel>, onCharacterClick: (Int) -> Unit){
-    LazyColumn(modifier = Modifier.padding(start = 5.dp, end = 5.dp, top = 20.dp)) {
+    LazyColumn(modifier = Modifier.padding(start = 5.dp, end = 5.dp, top = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        item {
+            Image(
+                painter = painterResource(R.drawable.img_disney_logo),
+                contentDescription = stringResource(id = R.string.description_logo),
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier
+                    .height(100.dp)
+                    .width(250.dp)
+            )
+        }
         items(data){
             CharacterListItem(it, onCharacterClick)
         }
@@ -65,15 +83,15 @@ fun CharacterListItem(characterModel: CharacterModel, onCharacterClick: (Int) ->
             .clickable {
                 onCharacterClick(characterModel.id)
             },
+        colors = CardDefaults.cardColors(containerColor = TransparentBG),
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)){
         Row(modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.White)
             .padding(8.dp)) {
             Image(
                 painter = if (hasImage) avatar
                 else painterResource(R.drawable.img_placeholder_character),
-                contentDescription = "avatar",
+                contentDescription = stringResource(id = R.string.description_avatar),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(64.dp)
@@ -81,13 +99,18 @@ fun CharacterListItem(characterModel: CharacterModel, onCharacterClick: (Int) ->
                     .border(
                         width = 2.dp,
                         shape = CircleShape,
-                        color = Color.Black
+                        color = Color.White
                     )
+                    .background(color = Color.White)
             )
             Spacer(modifier = Modifier.width(20.dp))
             Column {
-                Text(text = characterModel.name)
-                Text(text = transformDateFormat(characterModel.createdAt))
+                Text(text = characterModel.name,
+                    style = HeadingTextStyle,
+                    color = Color.White)
+                Text(text = transformDateFormat(characterModel.createdAt),
+                    style = SubHeadingTextStyle,
+                    color = HintGray)
             }
         }
     }
@@ -96,12 +119,5 @@ fun CharacterListItem(characterModel: CharacterModel, onCharacterClick: (Int) ->
 @Preview(showBackground = true)
 @Composable
 fun CharacterListScreenPreview(){
-//    CharacterListScreen(CharactersViewModel(),)
-//    CharacterListItem(
-//        characterModel = CharacterModel(
-//            100,
-//            "Sir Bart",
-//            "https://static.wikia.nocookie.net/disney/images/6/6d/Sword-in-stone-disneyscreencaps.com-8698.jpg",
-//            "2021-04-12T01:35:31.366Z"), navController = null
-//    )
+    CharacterListScreen(CharactersViewModel(),{})
 }

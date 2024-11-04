@@ -11,3 +11,5 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val DarkOverlay = Color(0xA9000000)
+val TransparentBG = Color(0x376F6F6F)
+val HintGray = Color(0xA9FFFFFF)
