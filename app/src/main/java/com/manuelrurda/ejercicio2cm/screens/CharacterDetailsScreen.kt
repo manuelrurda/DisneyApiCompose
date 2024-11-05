@@ -27,8 +27,10 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.manuelrurda.ejercicio2cm.R
 import com.manuelrurda.ejercicio2cm.components.Background
+import com.manuelrurda.ejercicio2cm.components.LoadingAnimation
 import com.manuelrurda.ejercicio2cm.models.CharacterModel
 import com.manuelrurda.ejercicio2cm.ui.theme.CharacterHeadingTextStyle
+import com.manuelrurda.ejercicio2cm.ui.theme.DisneyGold
 import com.manuelrurda.ejercicio2cm.ui.theme.HeadingTextStyle
 import com.manuelrurda.ejercicio2cm.ui.theme.HintGray
 import com.manuelrurda.ejercicio2cm.ui.theme.SubHeadingTextStyle
@@ -51,7 +53,11 @@ fun CharacterDetailsScreen(id:Int, viewModel: CharactersViewModel){
     Background {
         when(characterUiState){
             is UiState.Loading -> {
-                
+                LoadingAnimation(
+                    circleColor = DisneyGold,
+                    circleSize = 20.dp,
+                    width = 110.dp
+                )
             }
             is UiState.Success -> {
                 CharacterDetailsCard(character = (characterUiState as UiState.Success).data)

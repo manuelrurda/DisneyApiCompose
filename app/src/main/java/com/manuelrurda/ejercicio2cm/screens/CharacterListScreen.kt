@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,7 +34,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.manuelrurda.ejercicio2cm.R
 import com.manuelrurda.ejercicio2cm.components.Background
+import com.manuelrurda.ejercicio2cm.components.LoadingAnimation
 import com.manuelrurda.ejercicio2cm.models.CharacterModel
+import com.manuelrurda.ejercicio2cm.ui.theme.DisneyGold
 import com.manuelrurda.ejercicio2cm.ui.theme.HeadingTextStyle
 import com.manuelrurda.ejercicio2cm.ui.theme.HintGray
 import com.manuelrurda.ejercicio2cm.ui.theme.SubHeadingTextStyle
@@ -52,9 +55,11 @@ fun CharacterListScreen(
     Background {
         when(charactersUiState){
             is UiState.Loading -> {
-                Column {
-
-                }
+                LoadingAnimation(
+                    circleColor = DisneyGold,
+                    circleSize = 20.dp,
+                    width = 110.dp
+                )
             }
             is UiState.Success -> {
                 CharacterListColumn(
