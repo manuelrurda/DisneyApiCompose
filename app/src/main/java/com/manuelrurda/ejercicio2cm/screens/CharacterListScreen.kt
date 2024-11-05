@@ -40,16 +40,30 @@ import com.manuelrurda.ejercicio2cm.ui.theme.SubHeadingTextStyle
 import com.manuelrurda.ejercicio2cm.ui.theme.TransparentBG
 import com.manuelrurda.ejercicio2cm.utils.transformDateFormat
 import com.manuelrurda.ejercicio2cm.viewmodels.CharactersViewModel
+import com.manuelrurda.ejercicio2cm.viewmodels.UiState
 
 @Composable
 fun CharacterListScreen(
     viewModel: CharactersViewModel,
     onCharacterClick: (Int) -> Unit
 ){
-    val characters by viewModel.characters.collectAsState()
+    val charactersUiState by viewModel.charactersUiState.collectAsState()
 
     Background {
-        CharacterListColumn(data = characters, onCharacterClick)
+        when(charactersUiState){
+            is UiState.Loading -> {
+                Column {
+
+                }
+            }
+            is UiState.Success -> {
+                CharacterListColumn(
+                    data = (charactersUiState as UiState.Success).data,
+                    onCharacterClick = onCharacterClick
+                )
+            }
+            is UiState.Error -> {}
+        }
     }
 }
 

@@ -1,12 +1,10 @@
 package com.manuelrurda.ejercicio2cm.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manuelrurda.ejercicio2cm.models.CharacterModel
 import com.manuelrurda.ejercicio2cm.models.getEmptyCharacterModel
 import com.manuelrurda.ejercicio2cm.network.RetrofitClient
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,11 +13,11 @@ import kotlinx.coroutines.withContext
 
 class CharactersViewModel: ViewModel() {
 
-    private val _characters = MutableStateFlow<List<CharacterModel>>(emptyList())
-    val characters = _characters.asStateFlow()
+    private val _charactersUiState = MutableStateFlow<UiState<List<CharacterModel>>>(UiState.Loading)
+    val charactersUiState = _charactersUiState.asStateFlow()
 
-    private val _character = MutableStateFlow<CharacterModel>(getEmptyCharacterModel())
-    val character = _character.asStateFlow()
+    private val _characterUiState = MutableStateFlow<UiState<CharacterModel>>(UiState.Loading)
+    val characterUiState = _characterUiState.asStateFlow()
 
     init {
         getCharacters()
@@ -29,7 +27,11 @@ class CharactersViewModel: ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = RetrofitClient.retrofit.getCharacters()
             withContext(Dispatchers.Main){
-                _characters.value = response.body()?.data ?: emptyList()
+                if (response.isSuccessful){
+                    _charactersUiState.value = UiState.Success(response.body()?.data ?: emptyList())
+                }else{
+                    _charactersUiState.value = UiState.Error("")
+                }
             }
         }
     }
@@ -38,13 +40,12 @@ class CharactersViewModel: ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = RetrofitClient.retrofit.getCharacterById(id)
             withContext(Dispatchers.Main){
-                _character.value = response.body()?.data ?: getEmptyCharacterModel()
+                if(response.isSuccessful){
+                    _characterUiState.value = UiState.Success(response.body()?.data ?: getEmptyCharacterModel())
+                }else{
+                    _characterUiState.value = UiState.Error("")
+                }
             }
         }
     }
-
-    fun clearCharacter() {
-        _character.value = getEmptyCharacterModel()
-    }
-
 }
