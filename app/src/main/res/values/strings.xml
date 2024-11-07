@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Ejercicio2CM</string>
 
-    <string name="error_date_not_available">Date not available</string>
     <string name="error_server_error">Server error, tap to try again.</string>
     <string name="error_network_error">Network error, make sure you are connected to the internet. Tap to try again.</string>
     <string name="error_unexpected_error">An unexpected error occurred, tap to try again.</string>
@@ -12,7 +11,5 @@
     <string name="heading_films">Películas</string>
     <string name="heading_shorts">Cortos</string>
     <string name="heading_shows">Shows</string>
-
-    <string name="text_nothing_to_show">Nada que mostrar</string>
 
 </resources>

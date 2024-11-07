@@ -31,7 +31,6 @@ import com.manuelrurda.ejercicio2cm.components.ErrorCard
 import com.manuelrurda.ejercicio2cm.components.LoadingAnimation
 import com.manuelrurda.ejercicio2cm.models.CharacterModel
 import com.manuelrurda.ejercicio2cm.ui.theme.CharacterHeadingTextStyle
-import com.manuelrurda.ejercicio2cm.ui.theme.DisneyGold
 import com.manuelrurda.ejercicio2cm.ui.theme.HeadingTextStyle
 import com.manuelrurda.ejercicio2cm.ui.theme.HintGray
 import com.manuelrurda.ejercicio2cm.ui.theme.SubHeadingTextStyle

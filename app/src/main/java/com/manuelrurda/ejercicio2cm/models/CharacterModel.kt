@@ -1,7 +1,6 @@
 package com.manuelrurda.ejercicio2cm.models
 
 import com.google.gson.annotations.SerializedName
-import com.manuelrurda.ejercicio2cm.CharacterList
 
 data class CharactersResponse(
     val data: List<CharacterModel>
