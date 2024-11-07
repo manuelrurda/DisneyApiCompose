@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Ejercicio2CM</string>
 
-    <string name="error_server_error">Server error, tap to try again.</string>
-    <string name="error_network_error">Network error, make sure you are connected to the internet. Tap to try again.</string>
-    <string name="error_unexpected_error">An unexpected error occurred, tap to try again.</string>
+    <string name="error_server_error">Error de servidor, presiona para volver a intentarlo.</string>
+    <string name="error_network_error">Error de conexión, asegurate de estar conectado a internet. Presiona para volver a intentarlo</string>
+    <string name="error_unexpected_error">Ocurrió un error inesperado, presiona para volver a intentarlo.</string>
 
     <string name="description_avatar">Avatar</string>
     <string name="description_logo">Disney Logo</string>
