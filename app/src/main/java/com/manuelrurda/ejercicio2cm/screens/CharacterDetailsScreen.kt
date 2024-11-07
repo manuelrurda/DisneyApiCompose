@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.manuelrurda.ejercicio2cm.R
 import com.manuelrurda.ejercicio2cm.components.Background
+import com.manuelrurda.ejercicio2cm.components.ErrorCard
 import com.manuelrurda.ejercicio2cm.components.LoadingAnimation
 import com.manuelrurda.ejercicio2cm.models.CharacterModel
 import com.manuelrurda.ejercicio2cm.ui.theme.CharacterHeadingTextStyle
@@ -54,7 +55,7 @@ fun CharacterDetailsScreen(id:Int, viewModel: CharactersViewModel){
         when(characterUiState){
             is UiState.Loading -> {
                 LoadingAnimation(
-                    circleColor = DisneyGold,
+                    circleColor = Color.White,
                     circleSize = 20.dp,
                     width = 110.dp
                 )
@@ -63,7 +64,17 @@ fun CharacterDetailsScreen(id:Int, viewModel: CharactersViewModel){
                 CharacterDetailsCard(character = (characterUiState as UiState.Success).data)
             }
             is UiState.Error -> {
-
+                val message = when(characterUiState as UiState.Error){
+                    is UiState.Error.ServerError -> stringResource(id = R.string.error_server_error)
+                    is UiState.Error.NetworkError -> stringResource(id = R.string.error_network_error)
+                    is UiState.Error.UnexpectedError -> stringResource(id = R.string.error_unexpected_error)
+                }
+                ErrorCard(
+                    message = message,
+                    onTap = {
+                        viewModel.getCharacterById(id)
+                    }
+                )
             }
         }
     }
